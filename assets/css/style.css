@@ -1,0 +1,31 @@
+:root{
+  --background: rgb(28, 28, 128);
+  --button-background: rgb(103, 103, 173);
+}
+
+h1{
+  font-size: 2.5rem;
+  text-align: center;
+  padding: 30px;
+  margin: 0px;
+  background-color: var(--background);
+  color: white;
+}
+
+.search-box{
+  display: flex;
+  flex-direction: column;
+  margin-right: 80%;
+}
+.icon{
+  background-image: url("../images/search-icon.jpg");
+  background-size: cover;
+}
+
+button{
+  margin: 5px 10px;
+  background-color: var(--button-background);
+  color: white;
+  padding: 2px;
+}
+
