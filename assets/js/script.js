@@ -13,7 +13,11 @@ function submitButtonListener(event){
 
     let apiLink = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
 
-    fetch(apiLink);
+    fetch(apiLink)
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+    });
 }
 
 //USER INTERACTIONS =============================================================================
