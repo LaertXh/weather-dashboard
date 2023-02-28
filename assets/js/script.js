@@ -6,6 +6,7 @@ let cityNameEl = document.querySelector("#city-name");
 let tempTextEl = document.querySelector("#temp-text");
 let windTextEl = document.querySelector("#wind-text");
 let humidityTextEl = document.querySelector("#humidity-text");
+let weatherPanelsEl = document.querySelector(".weather-panels");
 
 //DATA ==========================================================================================
 let apiKey = "4dcc04aad0e12d160288086e453dc2ff";
@@ -37,20 +38,26 @@ function submitButtonListener(event){
         windTextEl.innerHTML = "Wind: " + wind + " MPH";
         humidityTextEl.innerHTML = "Humidity: " + humidity + "%";
 
+        //clear inner html for previous location 
+        weatherPanelsEl.innerHTML = "";
+
         //update data for the next 5 days
-        for(let i = 7; i < 40; i += 8){
+        for(let i = 5; i < 40; i += 8){
+            
             let elem = data.list[i];
             let htmlText = 
                            `<div class="panel">
                                 <h3 class="date">${rewriteDate(elem.dt_txt.split("-"))}</h3>
                                 <img src="https://openweathermap.org/img/wn/${elem.weather[0].icon}@2x.png" alt="weather-icon">
-                                <p>Temp: ${((elem.main.temp) - 273.15) * 9/5 + 32}'°F'</p>
+                                <p>Temp: ${Math.round((((elem.main.temp) - 273.15) * 9/5 + 32)*100)/ 100}'°F'</p>
                                 <p>Wind: ${elem.wind.speed} MPH</p>
                                 <p>Humidity: ${elem.main.humidity}%</p> 
-                            </div>`
+                            </div>`;
+
+            weatherPanelsEl.insertAdjacentHTML('beforeend', htmlText);
+                
         }
-
-
+        weatherPanelsEl.insertAdjacentHTML('beforeend', "<div></div>");
     });
 }
 
