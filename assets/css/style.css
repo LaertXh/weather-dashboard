@@ -1,6 +1,6 @@
 :root{
   --background: rgb(28, 28, 128);
-  --button-background: rgb(103, 103, 173);
+  --button-background:  rgb(25, 25, 78);
 }
 
 h1{
@@ -22,6 +22,11 @@ h1{
   flex-direction: column;
   width: 20%;
 }
+#form{
+  display: flex;
+  flex-direction: column;
+}
+
 .icon{
   background-image: url("../images/search-icon.jpg");
   background-size: cover;
@@ -32,6 +37,7 @@ button{
   background-color: var(--button-background);
   color: white;
   padding: 2px;
+  width: 100%
 }
 
 .weather-box{
@@ -49,11 +55,24 @@ button{
   border-width: 1px;
   padding-bottom: 20px;
 
+
 }
 
 .weather-details{
   padding-left: 20px;
   padding-top: 10px;
+}
+
+.weather-panels{
+  display:flex;
+  flex-direction: row;
+}
+
+.panel{
+  background-color: var(--button-background);
+  color: rgb(255, 250, 250);
+  padding: 15px;
+  margin-right: 20px;
 }
 
 
