@@ -17,26 +17,33 @@ function submitButtonListener(event){
     event.preventDefault();;
     city = userInputTextEl.value;
 
-    let apiLink = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
+    let apiLinkCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+    let apiLinkForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
 
-    fetch(apiLink)
+    fetch(apiLinkCurrent)
     .then((response) => response.json())
     .then((data) => {
         console.log(data);
 
         //date format fix
-        let reformatDate = rewriteDate(data.list[0].dt_txt.split("-"));
+        let reformatDate = rewriteDate(data.dt);
 
         //update data for today's date 
-        let cityName = data.city.name + " (" + reformatDate + ")";
-        let temp =  ((data.list[0].main.temp) - 273.15) * 9/5 + 32;
-        let wind = data.list[0].wind.speed;
-        let humidity = data.list[0].main.humidity;
+        let cityName = data.name + " (" + reformatDate + ")";
+        let temp =  ((data.main.temp) - 273.15) * 9/5 + 32;
+        let wind = data.wind.speed;
+        let humidity = data.main.humidity;
 
         cityNameEl.innerHTML = cityName;
         tempTextEl.innerHTML = "Temp: " + Math.round(temp * 100) / 100 + '°F';
         windTextEl.innerHTML = "Wind: " + wind + " MPH";
         humidityTextEl.innerHTML = "Humidity: " + humidity + "%";
+    });
+    
+    fetch(apiLinkForecast)
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
 
         //clear inner html for previous location 
         weatherPanelsEl.innerHTML = "";
@@ -47,9 +54,9 @@ function submitButtonListener(event){
             let elem = data.list[i];
             let htmlText = 
                            `<div class="panel">
-                                <h3 class="date">${rewriteDate(elem.dt_txt.split("-"))}</h3>
+                                <h3 class="date">${rewriteDate(elem.dt)}</h3>
                                 <img src="https://openweathermap.org/img/wn/${elem.weather[0].icon}@2x.png" alt="weather-icon">
-                                <p>Temp: ${Math.round((((elem.main.temp) - 273.15) * 9/5 + 32)*100)/ 100}'°F'</p>
+                                <p>Temp: ${Math.round((((elem.main.temp) - 273.15) * 9/5 + 32)*100)/ 100}°F</p>
                                 <p>Wind: ${elem.wind.speed} MPH</p>
                                 <p>Humidity: ${elem.main.humidity}%</p> 
                             </div>`;
@@ -63,10 +70,9 @@ function submitButtonListener(event){
 
 //given a date from the weather api, reformat it mm/dd/yyyy
 function rewriteDate(reformatDate){
-    reformatDate[2] = reformatDate[2].split(" ");
-    reformatDate[2] = reformatDate[2][0];
-    reformatDate = reformatDate[1] + "/" + reformatDate[2] +"/" + reformatDate[0];
-    return reformatDate;
+    let date = new Date(reformatDate * 1000);
+    let formattedDate = date.toLocaleDateString('en-US');
+    return formattedDate;
 }
 
 //USER INTERACTIONS =============================================================================
