@@ -7,6 +7,7 @@ let tempTextEl = document.querySelector("#temp-text");
 let windTextEl = document.querySelector("#wind-text");
 let humidityTextEl = document.querySelector("#humidity-text");
 let weatherPanelsEl = document.querySelector(".weather-panels");
+let buttonListEl = document.querySelector(".button-list");
 
 //DATA ==========================================================================================
 let apiKey = "4dcc04aad0e12d160288086e453dc2ff";
@@ -14,8 +15,17 @@ let city;
 //FUNCTIONS =====================================================================================
 
 function submitButtonListener(event){
-    event.preventDefault();;
+    event.preventDefault();
+    console.log(this);
     city = userInputTextEl.value;
+
+    //create the history for the searches
+    let newButton = document.createElement("button");
+    newButton.innerHTML = city;
+    newButton.addEventListener('click', submitButtonListener);
+    newButton.setAttribute("class", "history-button")
+    buttonListEl.insertBefore(newButton, buttonListEl.firstChild);
+    userInputTextEl.value = "";
 
     let apiLinkCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
     let apiLinkForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
@@ -81,3 +91,7 @@ formEl.addEventListener('submit', submitButtonListener);
 
 
 //INITIALIZATIONS ===============================================================================
+//when website loads it will show weather conditions for new york city by default
+userInputTextEl.value = "New York"
+submitButtonListener(new Event('click'));
+userInputTextEl.value = ""

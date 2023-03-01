@@ -1,6 +1,7 @@
 :root{
   --background: rgb(28, 28, 128);
   --button-background:  rgb(25, 25, 78);
+  --history-button-background:  rgb(79, 79, 129);
 }
 
 h1{
@@ -32,12 +33,25 @@ h1{
   background-size: cover;
 }
 
-button{
+#submit-button{
   margin: 5px 10px;
   background-color: var(--button-background);
   color: white;
   padding: 2px;
   width: 100%
+}
+
+.button-list{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.history-button{
+  background-color: var(--history-button-background);
+  color: white;
+  margin-top: 5px;
+  padding: 2px;
 }
 
 .weather-box{
