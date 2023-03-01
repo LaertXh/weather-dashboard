@@ -44,6 +44,13 @@ function submitButtonListener(event){
     //user clicked a button in the search history
     else{
         city = this.textContent;
+        //restructure the history buttons so that the one clicked will be at the top 
+        let index = locationHistory.indexOf(city);
+        locationHistory.splice(index, 1);
+        locationHistory.unshift(city);
+        localStorage.setItem("locationHistory", JSON.stringify(locationHistory));
+        buildHistory();
+
     }
 
 
