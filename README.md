@@ -4,9 +4,9 @@
 
 A small application that can display the weather 
 
-This website is capable of displaying the current weather and a five day forecast 
-When user searches for locations, it will be saved into the local storage
-The website will default to NYC, if data is avaliable from local storage it will pick the most recent location searched
+- This website is capable of displaying the current weather and a five day forecast 
+- When user searches for locations, it will be saved into the local storage
+- The website will default to NYC, if data is avaliable from local storage it will pick the most recent location searched
 
 
 
