@@ -108,5 +108,34 @@ button:hover {
   
 }
 
+@media screen and (max-width: 767px) {
+  .big-box{
+    display: flex;
+    flex-direction: column;
+    width: 100%
+  }
+  .search-box{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+  }
+  .weather-box{
+    display: flex;
+    flex-direction: column;
+  }
+  .weather-panels{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+  }
+  .panel{
+    flex-grow: 1;
+    width: 80%;
+  }
+}
+
 
 
