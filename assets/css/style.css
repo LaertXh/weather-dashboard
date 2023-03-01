@@ -77,6 +77,19 @@ h1{
   padding-top: 10px;
 }
 
+.row-order{
+  display: flex;
+  flex-direction: row;
+}
+
+.first-img{
+  width: 60px;
+  height: 60px;
+  background-color: var(--button-background);
+  border-radius: 50%;
+  margin-top: 3px;
+}
+
 .weather-panels{
   display:flex;
   flex-direction: row;

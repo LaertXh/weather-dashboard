@@ -8,10 +8,12 @@ let windTextEl = document.querySelector("#wind-text");
 let humidityTextEl = document.querySelector("#humidity-text");
 let weatherPanelsEl = document.querySelector(".weather-panels");
 let buttonListEl = document.querySelector(".button-list");
+let imgEl = document.querySelector("img");
 
 //DATA ==========================================================================================
 let apiKey = "4dcc04aad0e12d160288086e453dc2ff";
 let city;
+let locationHistory = JSON.parse(localStorage.getItem("locationHistory")) || [];
 //FUNCTIONS =====================================================================================
 
 function submitButtonListener(event){
@@ -19,12 +21,20 @@ function submitButtonListener(event){
     console.log(this);
     city = userInputTextEl.value;
 
+    //update local storage
+    //check to see if location already exists in the list, if not add it 
+    if(!(locationHistory.includes(city))){
+        //if list length is above 10 pop an element
+        if(locationHistory.length === 10){
+            locationHistory.pop();
+        }
+        locationHistory.unshift(city);
+    }
+    localStorage.setItem("locationHistory", JSON.stringify(locationHistory));
+
+
     //create the history for the searches
-    let newButton = document.createElement("button");
-    newButton.innerHTML = city;
-    newButton.addEventListener('click', submitButtonListener);
-    newButton.setAttribute("class", "history-button")
-    buttonListEl.insertBefore(newButton, buttonListEl.firstChild);
+    buildHistory();
     userInputTextEl.value = "";
 
     let apiLinkCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
@@ -48,6 +58,7 @@ function submitButtonListener(event){
         tempTextEl.innerHTML = "Temp: " + Math.round(temp * 100) / 100 + '°F';
         windTextEl.innerHTML = "Wind: " + wind + " MPH";
         humidityTextEl.innerHTML = "Humidity: " + humidity + "%";
+        imgEl.setAttribute("src", `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
     });
     
     fetch(apiLinkForecast)
@@ -83,6 +94,18 @@ function rewriteDate(reformatDate){
     let date = new Date(reformatDate * 1000);
     let formattedDate = date.toLocaleDateString('en-US');
     return formattedDate;
+}
+
+//build the buttons for the search history
+function buildHistory(){
+    buttonListEl.innerHTML = "";
+    for(let i = 0; i < locationHistory.length; i++){
+        let newButton = document.createElement("button");
+        newButton.innerHTML = locationHistory[i];
+        newButton.addEventListener('click', submitButtonListener);
+        newButton.setAttribute("class", "history-button")
+        buttonListEl.insertBefore(newButton, buttonListEl.firstChild);
+    }
 }
 
 //USER INTERACTIONS =============================================================================
