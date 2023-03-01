@@ -18,23 +18,35 @@ let locationHistory = JSON.parse(localStorage.getItem("locationHistory")) || [];
 
 function submitButtonListener(event){
     event.preventDefault();
-    console.log(this);
-    city = userInputTextEl.value;
-
-    //update local storage
-    //check to see if location already exists in the list, if not add it 
-    if(!(locationHistory.includes(city))){
-        //if list length is above 10 pop an element
-        if(locationHistory.length === 10){
-            locationHistory.pop();
+    //user gave a new input
+    if(this.length > 1){
+        city = userInputTextEl.value;    
+        //update local storage
+        //check to see if location already exists in the list, if not add it 
+        if(!(locationHistory.includes(city))){
+            //if list length is above 10 pop an element
+            if(locationHistory.length === 5){
+                locationHistory.pop();
+            }
+            locationHistory.unshift(city);
         }
-        locationHistory.unshift(city);
+        localStorage.setItem("locationHistory", JSON.stringify(locationHistory));
+        locationHistory = JSON.parse(localStorage.getItem("locationHistory"));
+
+
+        //create the history for the searches
+        buildHistory();
     }
-    localStorage.setItem("locationHistory", JSON.stringify(locationHistory));
+    //user refreshed the page
+    else if(this.length === 0){
+        city = userInputTextEl.value; 
+    }
+    //user clicked a button in the search history
+    else{
+        city = this.textContent;
+    }
 
 
-    //create the history for the searches
-    buildHistory();
     userInputTextEl.value = "";
 
     let apiLinkCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
@@ -70,7 +82,7 @@ function submitButtonListener(event){
         weatherPanelsEl.innerHTML = "";
 
         //update data for the next 5 days
-        for(let i = 5; i < 40; i += 8){
+        for(let i = 3; i < 40; i += 8){
             
             let elem = data.list[i];
             let htmlText = 
@@ -104,7 +116,7 @@ function buildHistory(){
         newButton.innerHTML = locationHistory[i];
         newButton.addEventListener('click', submitButtonListener);
         newButton.setAttribute("class", "history-button")
-        buttonListEl.insertBefore(newButton, buttonListEl.firstChild);
+        buttonListEl.append(newButton);
     }
 }
 
@@ -114,7 +126,20 @@ formEl.addEventListener('submit', submitButtonListener);
 
 
 //INITIALIZATIONS ===============================================================================
-//when website loads it will show weather conditions for new york city by default
-userInputTextEl.value = "New York"
-submitButtonListener(new Event('click'));
-userInputTextEl.value = ""
+//build history buttons based on local storage
+buildHistory();
+
+//when website loads it will show weather conditions for new york city by default if nothing exists in the history 
+if(locationHistory.length > 0){
+    userInputTextEl.value = locationHistory[0];
+    submitButtonListener(new Event('click'));
+    userInputTextEl.value = ""
+}
+else{
+    userInputTextEl.value = "New York";
+    submitButtonListener(new Event('click'));
+    userInputTextEl.value = ""
+}
+
+
+
